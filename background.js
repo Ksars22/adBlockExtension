@@ -13,29 +13,34 @@ const defaultFilters = [
 
 let adBlockActive = true;
 
-chrome.runtime.onInstalled.addListener(function() {
-	chrome.storage.sync.set({adblockEnabled: adBlockActive});
+chrome.runtime.onInstalled.addListener(function () {
+	chrome.storage.sync.set({ adblockEnabled: adBlockActive });
 });
 
 function blockAds(details) {
 	return { cancel: true };
 }
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message.type === 'checkboxStateChanged') {
-        var isChecked = message.isChecked;
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+	if (message.type === 'checkboxStateChanged') {
+		var isChecked = message.isChecked;
 
-        if (isChecked) {
-            chrome.webRequest.onBeforeRequest.addListener(
+		if (isChecked) {
+			adBlockActive = true;
+		} else {
+			adBlockActive = false;
+		}
+
+		if (adBlockActive) {
+			chrome.webRequest.onBeforeRequest.addListener(
 				blockAds,
 				{ urls: defaultFilters },
 				["blocking"]
 			);
-			adBlockActive = true;
-        } else {
-            chrome.webRequest.onBeforeRequest.removeListener(blockAds);
-			adBlockActive = false;
-        }
+		}
+		else {
+			chrome.webRequest.onBeforeRequest.removeListener(blockAds);
+		}
 	}
 });
 
