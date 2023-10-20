@@ -30,17 +30,16 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 		} else {
 			adBlockActive = false;
 		}
-
-		if (adBlockActive) {
-			chrome.webRequest.onBeforeRequest.addListener(
-				blockAds,
-				{ urls: defaultFilters },
-				["blocking"]
-			);
-		}
-		else {
-			chrome.webRequest.onBeforeRequest.removeListener(blockAds);
-		}
 	}
 });
 
+if (adBlockActive) {
+	chrome.webRequest.onBeforeRequest.addListener(
+		blockAds,
+		{ urls: defaultFilters },
+		["blocking"]
+	);
+}
+else {
+	chrome.webRequest.onBeforeRequest.removeListener(blockAds);
+}
