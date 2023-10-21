@@ -1,16 +1,3 @@
-const defaultFilters = [
-	"*://*.doubleclick.net/*",
-	"*://partner.googleadservices.com/*",
-	"*://*.googlesyndication.com/*",
-	"*://*.google-analytics.com/*",
-	"*://creative.ak.fbcdn.net/*",
-	"*://*.adbrite.com/*",
-	"*://*.exponential.com/*",
-	"*://*.quantserve.com/*",
-	"*://*.scorecardresearch.com/*",
-	"*://*.zedo.com/*",
-]
-
 let adBlockActive = true;
 
 chrome.runtime.onInstalled.addListener(function () {
@@ -36,7 +23,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 if (adBlockActive) {
 	chrome.webRequest.onBeforeRequest.addListener(
 		blockAds,
-		{ urls: defaultFilters },
+		{ urls: blocked_sites },
 		["blocking"]
 	);
 }
